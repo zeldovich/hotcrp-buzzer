@@ -1,0 +1,88 @@
+<head>
+  <title>Paper discussion status</title>
+</head>
+
+<body>
+  <div class="container">
+    {{>toppage}}
+  </div>
+
+  <audio id="buzzer">
+    <source src="buzzer.mp3">
+  </audio>
+</body>
+
+<template name="toppage">
+  <table width="100%">
+    <tr>
+      <td><h2>Paper discussion status</h2></td>
+      <td align="right"><button id="admintoggle">Toggle admin</botton></td>
+    </tr>
+  </table>
+
+  {{#if getSession "adminmode"}}
+    {{> admin}}
+  {{else}}
+    {{> paperlist}}
+  {{/if}}
+</template>
+
+<template name="admin">
+  <h2>{{count}} papers</h2>
+
+  <h2>Reset</h2>
+  <button id="reset">Reset</button>
+
+  <h2>Upload papers (xx-authors.csv)</h2>
+  <p>Search for all papers, "Select all", download "Authors &amp; contacts".</p>
+  <input type="file" id="authorsfile">
+  <button id="authors">Upload papers</button>
+
+  <h2>Upload PC members (xx-users.csv)</h2>
+  <p>Go to "Program committee", "Select all", download "Names and emails".</p>
+  <input type="file" id="pcusers">
+  <button id="users">Upload PC members</button>
+
+  <h2>Upload conflicts (xx-pcconflicts.csv)</h2>
+  <p>Search for all papers, "Select all", download "PC conflicts".</p>
+  <input type="file" id="conflictsfile">
+  <button id="conflicts">Upload conflicts</button>
+
+  <h2>Tracker</h2>
+  URL: <input id="cookie-url" value="https://papers.usenix.org/hotcrp/atc14/deadlines"><br>
+  Key: <input id="cookie-key" value="h-atc14">
+  Value: <input id="cookie-val" value="">
+  <button id="cookie">Set cookie</button>
+</template>
+
+<template name="paperlist">
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr>
+        <th width="10%">Position</th>
+        <th width="10%">Number</th>
+        <th width="50%">Title</th>
+        <th width="30%">Conflicts</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {{#each curpapers}}
+        {{> paper}}
+      {{/each}}
+    </tbody>
+  </table>
+</template>
+
+<template name="paper">
+  <tr class="{{posclass}}">
+    <td style="vertical-align: middle;">{{position}}</td>
+    <td style="vertical-align: middle;">{{number}}</td>
+    <td style="vertical-align: middle;">{{title}}</td>
+    <td style="vertical-align: middle;">
+      {{#each conflicts}}
+        {{this}}<br>
+      {{/each}}
+    </td>
+  </tr>
+</template>
