@@ -1,4 +1,6 @@
 function poll_tracker() {
+  var tracker_url;
+
   try {
     var cookie = Cookie.findOne({});
     if (!cookie.url || !cookie.key || !cookie.val) {
@@ -20,11 +22,29 @@ function poll_tracker() {
       papers = _.map(r.data.tracker.papers, function(p) { return p.pid; });
     }
     Status.update({}, {$set: {papers: papers}});
+
+    if (r.data.tracker_poll) {
+      tracker_url = r.data.tracker_poll;
+
+      if (!r.data.tracker_poll_corrected && !/^(?:https?:|\/)/.test(tracker_url)) {
+        hotcrp_base = cookie.url.replace(/deadlines$/, "");
+        tracker_url = hotcrp_base + tracker_url;
+      }
+    }
   } catch (err) {
     // ignore, try again next time
   }
 
-  schedule_poll();
+  if (tracker_url) {
+    HTTP.get(tracker_url, {timeout: 60000});
+    poll_now();
+  } else {
+    schedule_poll();
+  }
+}
+
+function poll_now() {
+  Meteor.setTimeout(poll_tracker, 0);
 }
 
 function schedule_poll() {
