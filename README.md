@@ -14,3 +14,5 @@ should go back into the room.
 
 The application piggy-backs on top of HotCRP's tracker feature.  This
 application is itself written in [Meteor](https://www.meteor.com/).
+It polls HotCRP periodically to obtain the tracker state, and uses
+HotCRP's long-polling support when available.
