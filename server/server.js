@@ -36,7 +36,11 @@ function poll_tracker() {
   }
 
   if (tracker_url) {
-    HTTP.get(tracker_url, {timeout: 60000});
+    try {
+      HTTP.get(tracker_url, {timeout: 60000});
+    } catch (err) {
+      // ignore, just try again
+    }
     poll_now();
   } else {
     schedule_poll();
