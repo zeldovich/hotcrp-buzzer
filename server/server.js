@@ -9,7 +9,7 @@ function poll_tracker() {
     }
 
     var r = HTTP.get(cookie.url,
-                     {query: "ajax=1",
+                     {query: "ajax=1&pc_conflicts=1",
                       headers: {"Cookie": cookie.key + "=" + cookie.val},
                       timeout: 10000});
     if (r.statusCode != 200 || !r.data) {
@@ -18,10 +18,17 @@ function poll_tracker() {
     }
 
     var papers = [];
-    if (r.data.tracker && r.data.tracker.papers) {
-      papers = _.map(r.data.tracker.papers, function(p) { return p.pid; });
+    var hide_conflicts = false;
+    if (r.data.tracker) {
+      if (r.data.tracker.papers) {
+        papers = r.data.tracker.papers;
+      }
+      if (r.data.tracker.hide_conflicts) {
+        hide_conflicts = r.data.tracker.hide_conflicts;
+      }
     }
-    Status.update({}, {$set: {papers: papers}});
+    Status.update({}, {$set: {papers: papers,
+                              hide_conflicts: hide_conflicts}});
 
     if (r.data.tracker_poll) {
       tracker_url = r.data.tracker_poll;
@@ -64,26 +71,8 @@ Meteor.startup(function () {
     Status.insert({papers: []});
   }
 
-  Meteor.publish('papers', function () {
-    return Papers.find({});
-  });
-
   Meteor.publish('status', function () {
     return Status.find({});
-  });
-
-  Papers.allow({
-    insert: function (userId, doc) {
-      return true;
-    },
-
-    update: function (userId, doc, fields, modifier) {
-      return true;
-    },
-
-    remove: function (userId, doc) {
-      return true;
-    },
   });
 
   schedule_poll();
