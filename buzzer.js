@@ -72,7 +72,7 @@ function poll_tracker() {
         tracker_url = hotcrp_base + tracker_url;
       }
 
-      var req2 = XMLHttpRequest();
+      var req2 = new XMLHttpRequest();
       req2.onerror = function () { poll_now(); };
       req2.onload = function () {
         if (req2.readyState != 4)
