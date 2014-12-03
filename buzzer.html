@@ -1,0 +1,63 @@
+<html>
+
+<head>
+  <title>Paper discussion status</title>
+  <link rel="stylesheet" href="bootstrap.min.css">
+  <link rel="stylesheet" href="bootstrap-theme.min.css">
+
+  <script src="jquery-1.11.1.min.js"></script>
+  <script src="handlebars-v2.0.0.js"></script>
+  <script src="bootstrap.min.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <h2>Paper discussion status</h2>
+
+    <div id="main-table"></div>
+  </div>
+
+  <audio id="buzzer">
+    <source src="buzzer.mp3">
+  </audio>
+</body>
+
+<script id="paperlist-template" type="text/x-handlebars-template">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        {{#if hide_conflicts}}
+          <th width="20%">Position</th>
+          <th width="80%">Conflicts</th>
+        {{else}}
+          <th width="10%">Position</th>
+          <th width="10%">Number</th>
+          <th width="50%">Title</th>
+          <th width="30%">Conflicts</th>
+        {{/if}}
+      </tr>
+    </thead>
+
+    <tbody>
+      {{#each papers}}
+        <tr class="{{posclass pid}}">
+          <td style="vertical-align: middle;">{{position pid}}</td>
+          {{#if ../hide_conflicts}}
+          {{else}}
+            <td style="vertical-align: middle;">{{pid}}</td>
+            <td style="vertical-align: middle;">{{title}}</td>
+          {{/if}}
+          <td style="vertical-align: middle;">
+            {{#each pc_conflicts}}
+              {{name}}<br>
+            {{/each}}
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</script>
+
+<script src="buzzer.js"></script>
+
+</html>
