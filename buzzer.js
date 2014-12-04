@@ -1,4 +1,4 @@
-var deadlines_url = "https://nsdi15.usenix.hotcrp.com/deadlines";
+var deadlines_url = "https://nsdi15.usenix.hotcrp.com/api";
 var lastbuzz;
 var tracker;
 
@@ -68,7 +68,7 @@ function poll_tracker() {
       var tracker_url = data.tracker_poll;
 
       if (!data.tracker_poll_corrected && !/^(?:https?:|\/)/.test(tracker_url)) {
-        hotcrp_base = deadlines_url.replace(/deadlines$/, "");
+        hotcrp_base = deadlines_url.replace(/api$/, "");
         tracker_url = hotcrp_base + tracker_url;
       }
 
