@@ -86,7 +86,7 @@ function poll_tracker() {
     }
   }
 
-  req.open("GET", deadlines_url, true);
+  req.open("GET", deadlines_url + "?ajax=1&pc_conflicts=1", true);
   req.send();
 }
 
