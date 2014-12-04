@@ -1,4 +1,4 @@
-var deadlines_url = "https://nsdi15.usenix.hotcrp.com/api";
+var deadlines_url = "/api";
 var lastbuzz;
 var tracker;
 
