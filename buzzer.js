@@ -32,9 +32,9 @@ Handlebars.registerHelper('posclass', function (pid) {
 });
 
 function refresh() {
-  if (tracker && tracker.papers && tracker.papers[0] != lastbuzz) {
+  if (tracker && tracker.papers && tracker.papers[0].pid != lastbuzz) {
     document.getElementById('buzzer').play();
-    lastbuzz = tracker.papers[0];
+    lastbuzz = tracker.papers[0].pid;
   }
 
   var context = tracker;
