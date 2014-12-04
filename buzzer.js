@@ -86,7 +86,8 @@ function poll_tracker() {
     }
   }
 
-  req.open("GET", deadlines_url + "?ajax=1&pc_conflicts=1", true);
+  var key = localStorage.getItem("buzzer-key");
+  req.open("GET", deadlines_url + "?pc_conflicts=1&key=" + key, true);
   req.send();
 }
 
@@ -98,5 +99,21 @@ function schedule_poll() {
   setTimeout(poll_tracker, 5000);
 }
 
+function key_keypress(e) {
+  var code = e.keyCode || e.which;
+  if (code == 13) {
+    var key = $("#buzzer-key").val();
+    localStorage.setItem("buzzer-key", key);
+    $("#buzzer-key").blur();
+  }
+}
+
+function key_init() {
+  var key = localStorage.getItem("buzzer-key");
+  $("#buzzer-key").val(key);
+  $("#buzzer-key").keypress(key_keypress);
+}
+
 refresh();
 poll_now();
+key_init();
